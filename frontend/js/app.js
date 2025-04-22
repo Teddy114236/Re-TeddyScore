@@ -18,6 +18,14 @@ new Vue({
         selectedMovie: null,
         showModal: false
     },
+    mounted() {
+        // 添加ESC键关闭模态窗口
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.showModal) {
+                this.closeModal();
+            }
+        });
+    },
     methods: {
         // 搜索电影
         searchMovies() {
@@ -92,13 +100,8 @@ new Vue({
         
         // 关闭详情弹窗
         closeModal() {
-            document.querySelector('.modal-content').style.animation = 'modalFadeOut 0.3s ease forwards';
-            document.querySelector('.movie-details-modal').style.animation = 'fadeOut 0.3s ease forwards 0.2s';
-            
-            setTimeout(() => {
-                this.showModal = false;
-                this.selectedMovie = null;
-            }, 500);
+            this.showModal = false;
+            this.selectedMovie = null;
         },
         
         // 清除错误信息

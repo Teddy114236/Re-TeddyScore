@@ -60,7 +60,7 @@
             <!-- 电影详情弹窗 -->
             <div class="movie-details-modal" v-if="showModal" @click="closeModal">
                 <div class="modal-content" @click.stop>
-                    <span class="close-button" @click="closeModal">&times;</span>
+                    <div class="close-button" @click="closeModal">&times;</div>
                     
                     <div v-if="selectedMovie" class="movie-details">
                         <div class="movie-header">
