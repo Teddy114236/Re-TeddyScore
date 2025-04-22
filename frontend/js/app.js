@@ -18,6 +18,14 @@ new Vue({
         selectedMovie: null,
         showModal: false
     },
+    mounted() {
+        // 添加ESC键关闭模态窗口
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.showModal) {
+                this.closeModal();
+            }
+        });
+    },
     methods: {
         // 搜索电影
         searchMovies() {
@@ -38,6 +46,14 @@ new Vue({
             .then(response => {
                 this.searchResults = response.data.movies || [];
                 this.loading = false;
+                
+                // 添加延迟让电影卡片按顺序加载
+                this.$nextTick(() => {
+                    const cards = document.querySelectorAll('.movie-card');
+                    cards.forEach((card, index) => {
+                        card.style.animationDelay = `${0.1 + index * 0.05}s`;
+                    });
+                });
             })
             .catch(error => {
                 console.error('搜索电影出错:', error);
@@ -56,6 +72,24 @@ new Vue({
                 this.selectedMovie = response.data;
                 this.showModal = true;
                 this.loading = false;
+                
+                // 添加标签动画延迟
+                this.$nextTick(() => {
+                    if (this.selectedMovie && this.selectedMovie.tags) {
+                        const tags = document.querySelectorAll('.tag');
+                        tags.forEach((tag, index) => {
+                            tag.style.setProperty('--i', index);
+                        });
+                    }
+                    
+                    // 设置评分条动画
+                    const bars = document.querySelectorAll('.bar');
+                    bars.forEach((bar) => {
+                        const width = bar.style.width;
+                        bar.style.width = '0';
+                        bar.style.setProperty('--width', width);
+                    });
+                });
             })
             .catch(error => {
                 console.error('获取电影详情出错:', error);
@@ -67,10 +101,7 @@ new Vue({
         // 关闭详情弹窗
         closeModal() {
             this.showModal = false;
-            // 等动画结束后清除数据
-            setTimeout(() => {
-                this.selectedMovie = null;
-            }, 300);
+            this.selectedMovie = null;
         },
         
         // 清除错误信息
@@ -101,7 +132,20 @@ new Vue({
             });
             
             const count = fiveStarRatings.filter(rating => rating === starLevel).length;
-            return Math.round((count / ratings.length) * 100);
+            const percentage = Math.round((count / ratings.length) * 100);
+            
+            // 设置评分条宽度供CSS动画使用
+            this.$nextTick(() => {
+                const bars = document.querySelectorAll('.rating-bar');
+                if (bars && bars[starLevel-1]) {
+                    const bar = bars[starLevel-1].querySelector('.bar');
+                    if (bar) {
+                        bar.style.width = `${percentage}%`;
+                    }
+                }
+            });
+            
+            return percentage;
         }
     }
 }); 

@@ -43,13 +43,10 @@
                 <h2>搜索结果</h2>
                 <div class="movies-grid">
                     <div class="movie-card" v-for="movie in searchResults" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">
-                        <div class="movie-poster">
-                            <!-- 使用电影ID作为图片占位符 -->
-                            <img :src="'https://via.placeholder.com/150x225?text=' + movie.movieId" alt="电影海报">
-                        </div>
                         <div class="movie-info">
                             <h3>{{ movie.title }}</h3>
                             <p class="genres">{{ movie.genres }}</p>
+                            <p class="movie-id">ID: {{ movie.movieId }}</p>
                         </div>
                     </div>
                 </div>
@@ -63,16 +60,14 @@
             <!-- 电影详情弹窗 -->
             <div class="movie-details-modal" v-if="showModal" @click="closeModal">
                 <div class="modal-content" @click.stop>
-                    <span class="close-button" @click="closeModal">&times;</span>
+                    <div class="close-button" @click="closeModal">&times;</div>
                     
                     <div v-if="selectedMovie" class="movie-details">
                         <div class="movie-header">
-                            <div class="movie-poster">
-                                <img :src="'https://via.placeholder.com/300x450?text=' + selectedMovie.movieId" alt="电影海报">
-                            </div>
                             <div class="movie-info">
                                 <h2>{{ selectedMovie.title }}</h2>
                                 <p class="genres">{{ selectedMovie.genres }}</p>
+                                <p class="movie-id">ID: {{ selectedMovie.movieId }}</p>
                                 <div class="external-links">
                                     <a v-if="selectedMovie.imdbId" :href="'https://www.imdb.com/title/tt' + selectedMovie.imdbId" target="_blank">IMDB</a>
                                     <a v-if="selectedMovie.tmdbId" :href="'https://www.themoviedb.org/movie/' + selectedMovie.tmdbId" target="_blank">TMDB</a>
