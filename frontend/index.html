@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电影数据库</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 引入Vue和Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container">
+                <h1>电影数据库</h1>
+                <div class="search-bar">
+                    <input 
+                        type="text" 
+                        v-model="searchQuery" 
+                        @keyup.enter="searchMovies"
+                        placeholder="搜索电影...">
+                    <button @click="searchMovies">搜索</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- 加载中提示 -->
+            <div class="loading" v-if="loading">
+                <div class="spinner"></div>
+                <p>加载中...</p>
+            </div>
+
+            <!-- 错误提示 -->
+            <div class="error-message" v-if="error">
+                <p>{{ error }}</p>
+                <button @click="clearError">重试</button>
+            </div>
+
+            <!-- 搜索结果 -->
+            <div class="search-results" v-if="searchResults.length > 0">
+                <h2>搜索结果</h2>
+                <div class="movies-grid">
+                    <div class="movie-card" v-for="movie in searchResults" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">
+                        <div class="movie-poster">
+                            <!-- 使用电影ID作为图片占位符 -->
+                            <img :src="'https://via.placeholder.com/150x225?text=' + movie.movieId" alt="电影海报">
+                        </div>
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="genres">{{ movie.genres }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 没有结果提示 -->
+            <div class="no-results" v-if="searchPerformed && searchResults.length === 0 && !loading">
+                <p>没有找到匹配的电影</p>
+            </div>
+
+            <!-- 电影详情弹窗 -->
+            <div class="movie-details-modal" v-if="showModal" @click="closeModal">
+                <div class="modal-content" @click.stop>
+                    <span class="close-button" @click="closeModal">&times;</span>
+                    
+                    <div v-if="selectedMovie" class="movie-details">
+                        <div class="movie-header">
+                            <div class="movie-poster">
+                                <img :src="'https://via.placeholder.com/300x450?text=' + selectedMovie.movieId" alt="电影海报">
+                            </div>
+                            <div class="movie-info">
+                                <h2>{{ selectedMovie.title }}</h2>
+                                <p class="genres">{{ selectedMovie.genres }}</p>
+                                <div class="external-links">
+                                    <a v-if="selectedMovie.imdbId" :href="'https://www.imdb.com/title/tt' + selectedMovie.imdbId" target="_blank">IMDB</a>
+                                    <a v-if="selectedMovie.tmdbId" :href="'https://www.themoviedb.org/movie/' + selectedMovie.tmdbId" target="_blank">TMDB</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 评分信息 -->
+                        <div class="ratings-section" v-if="selectedMovie.ratings && selectedMovie.ratings.length > 0">
+                            <h3>评分</h3>
+                            <div class="ratings-stats">
+                                <div class="avg-rating">
+                                    <span class="rating-value">{{ calculateAvgRating(selectedMovie.ratings) }}</span>
+                                    <span class="rating-count">{{ selectedMovie.ratings.length }} 个评分</span>
+                                </div>
+                                <div class="rating-distribution">
+                                    <div v-for="i in 5" :key="i" class="rating-bar">
+                                        <span class="rating-label">{{ i }}星</span>
+                                        <div class="bar-container">
+                                            <div class="bar" :style="{ width: calculateRatingPercentage(selectedMovie.ratings, i) + '%' }"></div>
+                                        </div>
+                                        <span class="rating-percentage">{{ calculateRatingPercentage(selectedMovie.ratings, i) }}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 标签信息 -->
+                        <div class="tags-section" v-if="selectedMovie.tags && selectedMovie.tags.length > 0">
+                            <h3>标签</h3>
+                            <div class="tags-container">
+                                <span class="tag" v-for="tag in selectedMovie.tags" :key="tag.userId + tag.tag">
+                                    {{ tag.tag }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>电影评分搜素 &copy; 2025</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 
