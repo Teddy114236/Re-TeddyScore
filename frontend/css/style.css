@@ -9,7 +9,8 @@ body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f5f5f5;
+    background-color: #f8f9fa;
+    transition: background-color 0.5s ease;
 }
 
 .container {
@@ -20,48 +21,63 @@ body {
 
 /* 头部样式 */
 header {
-    background-color: #3498db;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
     color: white;
-    padding: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 25px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 2.5rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: fadeInDown 0.8s ease;
 }
 
 .search-bar {
     display: flex;
     max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    overflow: hidden;
+    animation: fadeIn 1s ease;
 }
 
 .search-bar input {
     flex: 1;
-    padding: 10px 15px;
+    padding: 14px 20px;
     border: none;
-    border-radius: 4px 0 0 4px;
+    border-radius: 50px 0 0 50px;
     font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #3498db;
 }
 
 .search-bar button {
-    padding: 10px 20px;
-    background-color: #2980b9;
+    padding: 14px 25px;
+    background: #2980b9;
     color: white;
     border: none;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 50px 50px 0;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .search-bar button:hover {
-    background-color: #1c638f;
+    background: #1c638f;
+    transform: translateX(2px);
 }
 
 /* 主要内容区域 */
 main {
-    padding: 30px 0;
+    padding: 40px 0;
     min-height: calc(100vh - 160px); /* 保证页面至少填满视口 */
 }
 
@@ -71,17 +87,19 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px 0;
+    padding: 60px 0;
+    animation: fadeIn 0.5s ease;
 }
 
 .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(52, 152, 219, 0.2);
     border-radius: 50%;
     border-top: 4px solid #3498db;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
+    animation: spin 1s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
 }
 
 @keyframes spin {
@@ -89,67 +107,142 @@ main {
     100% { transform: rotate(360deg); }
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from { 
+        opacity: 0; 
+        transform: translateY(-20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* 错误消息 */
 .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 20px;
+    background-color: #fff3f3;
+    color: #e74c3c;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
     text-align: center;
+    border-left: 4px solid #e74c3c;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
 }
 
 .error-message button {
-    background-color: #dc3545;
+    background-color: #e74c3c;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 50px;
+    margin-top: 12px;
     cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.error-message button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
 }
 
 /* 搜索结果 */
 .search-results h2 {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-size: 1.8rem;
     color: #2c3e50;
+    position: relative;
+    padding-bottom: 10px;
+    animation: fadeInDown 0.8s ease;
+}
+
+.search-results h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #3498db;
+    animation: slideInLeft 1s ease;
+}
+
+@keyframes slideInLeft {
+    from { width: 0; }
+    to { width: 60px; }
 }
 
 .movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+    animation-delay: 0.2s;
 }
 
 .movie-card {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
+    transform: translateY(10px);
+    animation: fadeInUp 0.5s ease forwards;
 }
 
 .movie-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .movie-poster img {
     width: 100%;
     height: auto;
     display: block;
+    transition: transform 0.5s ease;
+}
+
+.movie-card:hover .movie-poster img {
+    transform: scale(1.05);
 }
 
 .movie-info {
-    padding: 15px;
+    padding: 18px;
 }
 
 .movie-info h3 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: 8px;
     color: #2c3e50;
+    font-weight: 600;
 }
 
 .genres {
@@ -163,9 +256,24 @@ main {
 /* 没有结果提示 */
 .no-results {
     text-align: center;
-    padding: 50px 0;
+    padding: 60px 0;
     color: #7f8c8d;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    animation: fadeIn 1s ease;
+}
+
+.no-results:before {
+    content: '🔍';
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 15px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 /* 电影详情弹窗 */
@@ -175,87 +283,153 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    animation: fadeIn 0.3s ease forwards;
+    backdrop-filter: blur(5px);
+}
+
+.movie-details-modal {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal-content {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 16px;
     width: 90%;
-    max-width: 900px;
+    max-width: 920px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    padding: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: scale(0.9);
+    animation: modalFadeIn 0.5s ease forwards;
+}
+
+@keyframes modalFadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .close-button {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
+    top: 20px;
+    right: 25px;
+    font-size: 30px;
     cursor: pointer;
-    color: #7f8c8d;
+    color: #95a5a6;
+    transition: all 0.3s ease;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-button:hover {
+    color: #e74c3c;
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: rotate(90deg);
 }
 
 .movie-header {
     display: flex;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .movie-header .movie-poster {
     flex: 0 0 300px;
-    margin-right: 30px;
+    margin-right: 40px;
+    transform: translateX(-10px);
+    opacity: 0;
+    animation: slideInLeft 0.6s ease forwards;
+    animation-delay: 0.2s;
 }
 
 .movie-header .movie-poster img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .movie-header .movie-info {
     flex: 1;
+    padding: 0;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.4s;
 }
 
 .movie-header .movie-info h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 2.2rem;
+    margin-bottom: 15px;
     color: #2c3e50;
+    line-height: 1.3;
 }
 
 .external-links {
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 .external-links a {
     display: inline-block;
-    margin-right: 10px;
-    padding: 8px 15px;
+    margin-right: 15px;
+    padding: 10px 20px;
     background-color: #3498db;
     color: white;
     text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
 .external-links a:hover {
     background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
 }
 
 /* 评分部分 */
 .ratings-section, .tags-section {
-    margin-top: 30px;
+    margin-top: 40px;
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+    animation-delay: 0.6s;
 }
 
 .ratings-section h3, .tags-section h3 {
     font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: #2c3e50;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 8px;
+}
+
+.ratings-section h3:after, .tags-section h3:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: #f39c12;
 }
 
 .ratings-stats {
@@ -265,38 +439,53 @@ main {
 
 .avg-rating {
     text-align: center;
-    margin-right: 40px;
+    margin-right: 50px;
+    position: relative;
+}
+
+.avg-rating:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: -25px;
+    height: 80%;
+    width: 1px;
+    background-color: #ddd;
 }
 
 .rating-value {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: bold;
     color: #f39c12;
     display: block;
     line-height: 1;
+    text-shadow: 0 2px 4px rgba(243, 156, 18, 0.3);
 }
 
 .rating-count {
     color: #7f8c8d;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    margin-top: 8px;
 }
 
 .rating-distribution {
     flex: 1;
+    margin-top: 8px;
 }
 
 .rating-bar {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .rating-label {
     width: 40px;
     text-align: right;
-    margin-right: 10px;
-    font-size: 0.9rem;
-    color: #7f8c8d;
+    margin-right: 15px;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    font-weight: 500;
 }
 
 .bar-container {
@@ -305,42 +494,74 @@ main {
     background-color: #ecf0f1;
     border-radius: 6px;
     overflow: hidden;
-    margin-right: 10px;
+    margin-right: 15px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .bar {
     height: 100%;
-    background-color: #f39c12;
+    background: linear-gradient(to right, #f1c40f, #f39c12);
     border-radius: 6px;
+    width: 0;
+    animation: growBar 1.5s ease forwards;
+}
+
+@keyframes growBar {
+    from { width: 0; }
+    to { width: var(--width); }
 }
 
 .rating-percentage {
-    width: 40px;
-    font-size: 0.9rem;
-    color: #7f8c8d;
+    width: 45px;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    font-weight: 500;
 }
 
 /* 标签部分 */
+.tags-section {
+    animation-delay: 0.8s;
+}
+
 .tags-container {
     display: flex;
     flex-wrap: wrap;
 }
 
 .tag {
-    background-color: #ecf0f1;
-    padding: 5px 10px;
-    margin: 0 10px 10px 0;
-    border-radius: 15px;
-    font-size: 0.9rem;
-    color: #7f8c8d;
+    background-color: #e8f4fc;
+    padding: 8px 16px;
+    margin: 0 12px 12px 0;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    color: #3498db;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+    transform: translateY(10px);
+    animation-delay: calc(0.9s + var(--i, 0) * 0.05s);
+}
+
+.tag:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
 /* 页脚样式 */
 footer {
-    background-color: #2c3e50;
+    background: linear-gradient(135deg, #2c3e50, #1a252f);
     color: white;
-    padding: 20px 0;
+    padding: 25px 0;
     text-align: center;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    opacity: 0.9;
+    letter-spacing: 1px;
 }
 
 /* 响应式设计 */
@@ -351,11 +572,11 @@ footer {
     
     .movie-header .movie-poster {
         margin-right: 0;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         flex: none;
         width: 100%;
         max-width: 300px;
-        margin: 0 auto 20px;
+        margin: 0 auto 30px;
     }
     
     .ratings-stats {
@@ -364,6 +585,34 @@ footer {
     
     .avg-rating {
         margin-right: 0;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
+    
+    .avg-rating:after {
+        display: none;
+    }
+    
+    .modal-content {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 } 
