@@ -1,5 +1,7 @@
-// 配置API基础URL
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+// 配置API基础URL - 自动检测当前主机
+const API_BASE_URL = window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1')
+    ? 'http://localhost:8080/api/v1'  // 本地开发环境
+    : '/api/v1';  // 生产环境（相对路径）
 
 // Vue应用实例
 new Vue({
