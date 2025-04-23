@@ -26,22 +26,21 @@
         </header>
 
         <main class="container">
-            <!-- 加载中提示 -->
-            <div class="loading" v-if="loading">
-                <div class="spinner"></div>
-                <p>加载中...</p>
-            </div>
-
             <!-- 错误提示 -->
             <div class="error-message" v-if="error">
                 <p>{{ error }}</p>
                 <button @click="clearError">重试</button>
             </div>
 
-            <!-- 推荐电影 -->
-            <div class="recommended-movies" v-if="!searchPerformed || (searchPerformed && searchResults.length === 0)">
+            <!-- 推荐电影 - 只在未搜索时显示 -->
+            <div class="recommended-movies" v-if="!searchPerformed">
                 <h2>推荐电影</h2>
-                <div class="movies-grid">
+                <!-- 推荐电影加载中 -->
+                <div class="loading section-loading" v-if="loadingRecommended">
+                    <div class="spinner"></div>
+                    <p>加载推荐电影中...</p>
+                </div>
+                <div class="movies-grid" v-else>
                     <div class="movie-card" v-for="movie in recommendedMovies" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">
                         <div class="movie-info">
                             <h3>{{ movie.title }}</h3>
@@ -53,22 +52,29 @@
             </div>
 
             <!-- 搜索结果 -->
-            <div class="search-results" v-if="searchPerformed && searchResults.length > 0">
+            <div class="search-results" v-if="searchPerformed">
                 <h2>搜索结果</h2>
-                <div class="movies-grid">
-                    <div class="movie-card" v-for="movie in searchResults" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">
-                        <div class="movie-info">
-                            <h3>{{ movie.title }}</h3>
-                            <p class="genres">{{ movie.genres }}</p>
-                            <p class="movie-id">ID: {{ movie.movieId }}</p>
+                <!-- 搜索结果加载中 -->
+                <div class="loading section-loading" v-if="loadingSearch">
+                    <div class="spinner"></div>
+                    <p>搜索中...</p>
+                </div>
+                <div v-else>
+                    <div class="movies-grid" v-if="searchResults.length > 0">
+                        <div class="movie-card" v-for="movie in searchResults" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">
+                            <div class="movie-info">
+                                <h3>{{ movie.title }}</h3>
+                                <p class="genres">{{ movie.genres }}</p>
+                                <p class="movie-id">ID: {{ movie.movieId }}</p>
+                            </div>
                         </div>
                     </div>
+                    <!-- 没有结果提示 -->
+                    <div class="no-results" v-if="searchResults.length === 0">
+                        <p>没有找到匹配的电影</p>
+                        <button class="return-home" @click="resetSearch">返回首页</button>
+                    </div>
                 </div>
-            </div>
-
-            <!-- 没有结果提示 -->
-            <div class="no-results" v-if="searchPerformed && searchResults.length === 0 && !loading">
-                <p>没有找到匹配的电影</p>
             </div>
 
             <!-- 电影详情弹窗 -->
@@ -76,7 +82,13 @@
                 <div class="modal-content" @click.stop>
                     <div class="close-button" @click="closeModal">&times;</div>
                     
-                    <div v-if="selectedMovie" class="movie-details">
+                    <!-- 电影详情加载中 -->
+                    <div class="loading modal-loading" v-if="loadingMovieDetails">
+                        <div class="spinner"></div>
+                        <p>加载电影详情中...</p>
+                    </div>
+                    
+                    <div v-else-if="selectedMovie" class="movie-details">
                         <div class="movie-header">
                             <div class="movie-info">
                                 <h2>{{ selectedMovie.title }}</h2>

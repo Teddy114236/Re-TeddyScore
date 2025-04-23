@@ -156,6 +156,43 @@ main {
     animation: fadeIn 0.5s ease;
 }
 
+/* 区域性加载提示样式 */
+.section-loading {
+    padding: 40px 0;
+    background-color: rgba(248, 249, 250, 0.7);
+    border-radius: 8px;
+    margin: 15px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.section-loading p {
+    color: #3498db;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* 模态窗口加载提示 */
+.modal-loading {
+    padding: 80px 0;
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-loading .spinner {
+    width: 60px;
+    height: 60px;
+    border-width: 5px;
+}
+
+.modal-loading p {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    color: #3498db;
+}
+
 .spinner {
     width: 50px;
     height: 50px;
@@ -355,6 +392,28 @@ main {
     font-size: 3rem;
     margin-bottom: 15px;
     animation: pulse 2s infinite;
+}
+
+.return-home {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.8s ease;
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.return-home:hover {
+    background: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
 }
 
 @keyframes pulse {

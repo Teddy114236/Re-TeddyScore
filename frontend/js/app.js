@@ -12,8 +12,10 @@ new Vue({
         searchResults: [],
         searchPerformed: false,
         
-        // 加载状态和错误
-        loading: false,
+        // 加载状态和错误 - 按区域分离
+        loadingRecommended: false,
+        loadingSearch: false,
+        loadingMovieDetails: false,
         error: null,
         
         // 电影详情
@@ -35,9 +37,17 @@ new Vue({
         this.loadRecommendedMovies();
     },
     methods: {
+        // 重置搜索，返回首页
+        resetSearch() {
+            this.searchQuery = '';
+            this.searchResults = [];
+            this.searchPerformed = false;
+            this.error = null;
+        },
+        
         // 加载推荐电影
         loadRecommendedMovies() {
-            this.loading = true;
+            this.loadingRecommended = true;
             this.error = null;
             
             // 获取ID 1-10的电影作为推荐
@@ -55,7 +65,7 @@ new Vue({
                 .then(results => {
                     // 过滤掉null结果并设置推荐电影
                     this.recommendedMovies = results.filter(movie => movie !== null);
-                    this.loading = false;
+                    this.loadingRecommended = false;
                     
                     // 添加延迟让电影卡片按顺序加载
                     this.$nextTick(() => {
@@ -68,7 +78,7 @@ new Vue({
                 .catch(error => {
                     console.error('获取推荐电影出错:', error);
                     this.error = '获取推荐电影时出错，请稍后重试';
-                    this.loading = false;
+                    this.loadingRecommended = false;
                 });
         },
         
@@ -78,7 +88,7 @@ new Vue({
                 return;
             }
             
-            this.loading = true;
+            this.loadingSearch = true;
             this.error = null;
             this.searchPerformed = true;
             
@@ -90,7 +100,7 @@ new Vue({
             })
             .then(response => {
                 this.searchResults = response.data.movies || [];
-                this.loading = false;
+                this.loadingSearch = false;
                 
                 // 添加延迟让电影卡片按顺序加载
                 this.$nextTick(() => {
@@ -103,20 +113,20 @@ new Vue({
             .catch(error => {
                 console.error('搜索电影出错:', error);
                 this.error = '搜索电影时出错，请稍后重试';
-                this.loading = false;
+                this.loadingSearch = false;
             });
         },
         
         // 显示电影详情
         showMovieDetails(movieId) {
-            this.loading = true;
+            this.loadingMovieDetails = true;
             this.error = null;
             
             axios.get(`${API_BASE_URL}/movies/${movieId}`)
             .then(response => {
                 this.selectedMovie = response.data;
                 this.showModal = true;
-                this.loading = false;
+                this.loadingMovieDetails = false;
                 
                 // 添加标签动画延迟
                 this.$nextTick(() => {
@@ -139,7 +149,7 @@ new Vue({
             .catch(error => {
                 console.error('获取电影详情出错:', error);
                 this.error = '获取电影详情时出错，请稍后重试';
-                this.loading = false;
+                this.loadingMovieDetails = false;
             });
         },
         
