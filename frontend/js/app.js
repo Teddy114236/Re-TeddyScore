@@ -66,14 +66,6 @@ new Vue({
                     // 过滤掉null结果并设置推荐电影
                     this.recommendedMovies = results.filter(movie => movie !== null);
                     this.loadingRecommended = false;
-                    
-                    // 添加延迟让电影卡片按顺序加载
-                    this.$nextTick(() => {
-                        const cards = document.querySelectorAll('.recommended-movies .movie-card');
-                        cards.forEach((card, index) => {
-                            card.style.animationDelay = `${0.1 + index * 0.05}s`;
-                        });
-                    });
                 })
                 .catch(error => {
                     console.error('获取推荐电影出错:', error);
@@ -101,14 +93,6 @@ new Vue({
             .then(response => {
                 this.searchResults = response.data.movies || [];
                 this.loadingSearch = false;
-                
-                // 添加延迟让电影卡片按顺序加载
-                this.$nextTick(() => {
-                    const cards = document.querySelectorAll('.movie-card');
-                    cards.forEach((card, index) => {
-                        card.style.animationDelay = `${0.1 + index * 0.05}s`;
-                    });
-                });
             })
             .catch(error => {
                 console.error('搜索电影出错:', error);

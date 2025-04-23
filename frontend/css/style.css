@@ -314,15 +314,12 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 35px;
-    opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
-    animation-delay: 0.2s;
     margin-bottom: 50px;
 }
 
 .recommended-movies .movie-card {
     border-left: 4px solid #e74c3c;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
 }
 
 .recommended-movies .movie-card:hover {
@@ -335,10 +332,8 @@ main {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
     cursor: pointer;
-    transform: translateY(10px);
-    animation: fadeInUp 0.5s ease forwards;
     padding: 28px 25px;
     border-left: 4px solid #3498db;
 }
