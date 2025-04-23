@@ -18,7 +18,10 @@ new Vue({
         
         // 电影详情
         selectedMovie: null,
-        showModal: false
+        showModal: false,
+        
+        // 推荐电影
+        recommendedMovies: []
     },
     mounted() {
         // 添加ESC键关闭模态窗口
@@ -27,8 +30,48 @@ new Vue({
                 this.closeModal();
             }
         });
+        
+        // 加载推荐电影
+        this.loadRecommendedMovies();
     },
     methods: {
+        // 加载推荐电影
+        loadRecommendedMovies() {
+            this.loading = true;
+            this.error = null;
+            
+            // 获取ID 1-10的电影作为推荐
+            const movieIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const promises = movieIds.map(id => 
+                axios.get(`${API_BASE_URL}/movies/${id}`)
+                    .then(response => response.data)
+                    .catch(error => {
+                        console.warn(`获取电影ID ${id} 失败:`, error);
+                        return null;
+                    })
+            );
+            
+            Promise.all(promises)
+                .then(results => {
+                    // 过滤掉null结果并设置推荐电影
+                    this.recommendedMovies = results.filter(movie => movie !== null);
+                    this.loading = false;
+                    
+                    // 添加延迟让电影卡片按顺序加载
+                    this.$nextTick(() => {
+                        const cards = document.querySelectorAll('.recommended-movies .movie-card');
+                        cards.forEach((card, index) => {
+                            card.style.animationDelay = `${0.1 + index * 0.05}s`;
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('获取推荐电影出错:', error);
+                    this.error = '获取推荐电影时出错，请稍后重试';
+                    this.loading = false;
+                });
+        },
+        
         // 搜索电影
         searchMovies() {
             if (!this.searchQuery.trim()) {

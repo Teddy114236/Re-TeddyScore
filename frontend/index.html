@@ -38,8 +38,22 @@
                 <button @click="clearError">重试</button>
             </div>
 
+            <!-- 推荐电影 -->
+            <div class="recommended-movies" v-if="!searchPerformed || (searchPerformed && searchResults.length === 0)">
+                <h2>推荐电影</h2>
+                <div class="movies-grid">
+                    <div class="movie-card" v-for="movie in recommendedMovies" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">
+                        <div class="movie-info">
+                            <h3>{{ movie.title }}</h3>
+                            <p class="genres">{{ movie.genres }}</p>
+                            <p class="movie-id">ID: {{ movie.movieId }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 搜索结果 -->
-            <div class="search-results" v-if="searchResults.length > 0">
+            <div class="search-results" v-if="searchPerformed && searchResults.length > 0">
                 <h2>搜索结果</h2>
                 <div class="movies-grid">
                     <div class="movie-card" v-for="movie in searchResults" :key="movie.movieId" @click="showMovieDetails(movie.movieId)">

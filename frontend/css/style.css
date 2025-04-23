@@ -23,34 +23,98 @@ body {
 header {
     background: linear-gradient(135deg, #3498db, #2c3e50);
     color: white;
-    padding: 35px 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    padding: 50px 0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+    background-size: cover;
+    pointer-events: none;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0) 100%);
+    filter: blur(3px);
+}
+
+header .container {
+    text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 header h1 {
     margin-bottom: 25px;
-    font-size: 2.5rem;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 3.2rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
     animation: fadeInDown 0.8s ease;
+    position: relative;
+    display: inline-block;
+}
+
+header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
 }
 
 .search-bar {
     display: flex;
-    max-width: 600px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     border-radius: 50px;
     overflow: hidden;
     animation: fadeIn 1s ease;
+    margin: 0 auto;
+    position: relative;
+}
+
+.search-bar::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 100%);
 }
 
 .search-bar input {
     flex: 1;
-    padding: 14px 20px;
+    padding: 16px 25px;
     border: none;
     border-radius: 50px 0 0 50px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     transition: all 0.3s ease;
 }
 
@@ -60,13 +124,13 @@ header h1 {
 }
 
 .search-bar button {
-    padding: 14px 25px;
+    padding: 16px 30px;
     background: #2980b9;
     color: white;
     border: none;
     border-radius: 0 50px 50px 0;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     transition: all 0.3s ease;
 }
@@ -174,7 +238,7 @@ main {
 }
 
 /* 搜索结果 */
-.search-results h2 {
+.search-results h2, .recommended-movies h2 {
     margin-bottom: 35px;
     font-size: 1.8rem;
     color: #2c3e50;
@@ -183,7 +247,7 @@ main {
     animation: fadeInDown 0.8s ease;
 }
 
-.search-results h2:after {
+.search-results h2:after, .recommended-movies h2:after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -192,6 +256,16 @@ main {
     height: 3px;
     background: #3498db;
     animation: slideInLeft 1s ease;
+}
+
+/* 推荐电影 */
+.recommended-movies {
+    margin-bottom: 60px;
+}
+
+.recommended-movies h2:after {
+    background: #e74c3c;
+    width: 80px;
 }
 
 @keyframes slideInLeft {
@@ -207,6 +281,16 @@ main {
     animation: fadeIn 0.8s ease forwards;
     animation-delay: 0.2s;
     margin-bottom: 50px;
+}
+
+.recommended-movies .movie-card {
+    border-left: 4px solid #e74c3c;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.recommended-movies .movie-card:hover {
+    border-left-color: #c0392b;
+    transform: translateY(-8px) scale(1.02);
 }
 
 .movie-card {
@@ -575,11 +659,8 @@ footer p {
     
     .movie-header .movie-poster {
         margin-right: 0;
-        margin-bottom: 30px;
-        flex: none;
-        width: 100%;
-        max-width: 300px;
-        margin: 0 auto 30px;
+        margin-bottom: 20px;
+        max-width: 100%;
     }
     
     .ratings-stats {
@@ -587,8 +668,8 @@ footer p {
     }
     
     .avg-rating {
-        margin-right: 0;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+        width: 100%;
     }
     
     .avg-rating:after {
@@ -600,21 +681,58 @@ footer p {
     }
     
     header h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
     
     .search-bar {
-        max-width: 100%;
+        max-width: 90%;
     }
     
     .movies-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .search-bar input {
+        padding: 14px 15px;
+        font-size: 1rem;
+    }
+
+    .search-bar button {
+        padding: 14px 20px;
+        font-size: 1rem;
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
     .movies-grid {
-        grid-template-columns: repeat(auto-fill, minmax(calc(50% - 15px), 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    header h1 {
+        font-size: 2.8rem;
+    }
+}
+
+/* 小型移动设备 */
+@media (max-width: 480px) {
+    header {
+        padding: 30px 0;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .search-bar {
+        max-width: 100%;
+    }
+
+    .search-bar input {
+        padding: 12px 15px;
+    }
+
+    .search-bar button {
+        padding: 12px 18px;
     }
 }
 
